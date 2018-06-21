@@ -6,10 +6,10 @@ And_NeutrinoWandBarGraph::And_NeutrinoWandBarGraph()
 {
 }
 
-void And_RGBLed::setSpeed(int s)
+void And_NeutrinoWandBarGraph::setSpeed(int s)
 {
 }
 
-void And_RGBLed::setPowerLevel(int s)
+void And_NeutrinoWandBarGraph::setPowerLevel(int s)
 {
 }
