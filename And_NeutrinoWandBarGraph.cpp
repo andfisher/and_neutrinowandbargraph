@@ -77,16 +77,14 @@ void And_NeutrinoWandBarGraph::_digitalWrite(int p, int val)
 	}
 }
 
-/**
- * Suggested speeds:
- * 10 - Extreme
- * 20 - Seminal
- * 50 - Nominal
- * 100 - Minimal
- */
 void And_NeutrinoWandBarGraph::setSpeed(int s)
 {
-	_speed = s;
+	if (_speed != s) {
+		_speed = s;
+
+		// This should force animations to reset
+		_active = false;
+	}
 }
 
 void And_NeutrinoWandBarGraph::setPowerLevel(int p)
@@ -166,7 +164,6 @@ void And_NeutrinoWandBarGraph::idle(long currentTime)
 void And_NeutrinoWandBarGraph::activate(long currentTime)
 {
 	int centerLED = (_pinCount - 1) / 2;
-	int s = _speed / _pinCount;
 
 	if (! _active) {
 		_startTime = currentTime;
@@ -174,7 +171,7 @@ void And_NeutrinoWandBarGraph::activate(long currentTime)
 	}
 
 	unsigned long diff = (currentTime - _startTime);
-	int frames = diff / s;
+	int frames = diff / _speed;
 	int cycle = (frames / _pinCount) % (centerLED +1);
 	int ascendingIndex = centerLED + cycle;
 	int descendingIndex = centerLED - cycle;
