@@ -16,7 +16,7 @@ class And_NeutrinoWandBarGraph {
 		void idle(long currentTime);
 		void activate(long currentTime);
 		
-		const static int SPEED_MINIMAL = 100;
+		const static int SPEED_MINIMAL = 70;
 		const static int SPEED_NOMINAL = 50;
 		const static int SPEED_SEMIMAL = 20;
 		const static int SPEED_EXTREME = 10;

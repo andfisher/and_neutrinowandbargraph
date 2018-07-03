@@ -130,9 +130,9 @@ void And_NeutrinoWandBarGraph::idle(long currentTime)
 	int localIndex = frames % maxLitBars;
 	
 	int cycle = frames / maxLitBars;
-	bool asc = (cycle % 2 == 1); // only ascend bars on ODD cycles
+	bool asc = (cycle % 2 == 0); // only ascend bars on EVEN cycles
 	
-	int inverseIndex = (_pinCount - localIndex) -1;
+	int inverseIndex = (maxLitBars - localIndex) -1;
 	
 	/*
 	For debugging long type limits affecting the animation
@@ -165,15 +165,35 @@ void And_NeutrinoWandBarGraph::idle(long currentTime)
 
 void And_NeutrinoWandBarGraph::activate(long currentTime)
 {
+	int centerLED = (_pinCount - 1) / 2;
+	int s = _speed / _pinCount;
+
 	if (! _active) {
 		_startTime = currentTime;
 		_active = true;
 	}
-	
-	/**
-	 * @TODO
-	 * Implement the "activated" bargraph animation
-	 *
-	 */
+
+	unsigned long diff = (currentTime - _startTime);
+	int frames = diff / s;
+	int cycle = (frames / _pinCount) % (centerLED +1);
+	int ascendingIndex = centerLED + cycle;
+	int descendingIndex = centerLED - cycle;
+
+	if (ascendingIndex >= _pinCount) {
+		ascendingIndex = centerLED;
+	}
+	if (descendingIndex < 0) {
+		descendingIndex = centerLED;
+	}
+
+	for (int i = 0; i < _pinCount; i++) {
+		if (i >= ascendingIndex && i < ascendingIndex + _power) {
+			_digitalWrite(i, HIGH);
+		} else if (i <= descendingIndex && i > descendingIndex - _power) {
+			_digitalWrite(i, HIGH);
+		} else {
+			_digitalWrite(i, LOW);
+		}
+	}
 	
 }
